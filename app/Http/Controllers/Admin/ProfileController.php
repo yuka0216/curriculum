@@ -15,8 +15,6 @@ class ProfileController extends Controller
       return view('admin.profile.create');
     }
     
-
-    
     public function edit()
     {
       return view('admin.profile.edit');
@@ -27,17 +25,14 @@ class ProfileController extends Controller
       return redirect('admin/profile/edit');
     }
     
-    public function create(Request $request) 
-    //この文の意味が分からない$requestになにが入っているのか
+    public function create(Request $request)
     {
-      $this->validate($request, Profile::$rules);  //ここも
-      $profile = new Profile;   //ここも
-      $form = $request->all();   //ここも
       
-      unset($form['_token']);    
-      //tokenを削除する理由はなんでか
-      //そもそもtokenとは?（フォームから送信された）データ全てのことでしょうか。）
-      unset($form['image']);     //imageもなぜ削除するのか。
+      $this->validate($request, Profile::$rules);
+      $profile = new Profile;
+      $form = $request->all();
+      
+      unset($form['_token']);   
       
       $profile->fill($form);
       $profile->save();
