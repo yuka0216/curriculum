@@ -41,6 +41,21 @@ class ProfileController extends Controller
       return redirect('admin/profile/create');
     }
     
+    public function index(Request $request)
+    {
+        $cond_title = $request->cond_title;
+        //$cond_title=ユーザーが入力した検索値
+        if ($cond_title != '') {
+          $posts = Profile::where('title', $cond_title)->get();
+          //$cond_titleがあればそれに一致するレコードを、なければすべてのレコードを取得する
+          
+        } else {
+          $posts = Profile::all();
+        }
+        return view('admin.profile.index',['posts' => $posts,
+        'cond_title' => $cond_title]);
+        }
+    
     public function update(Request $request)
     {
         $this->validate($request, Profile::$rules);
@@ -58,4 +73,11 @@ class ProfileController extends Controller
         
         return redirect('admin/profile/edit?id=' .$profile->id);
     }
+    public function delete(Request $request)
+    {
+        $profile = Profile::find($request->id);
+        $profile->delete();
+        return redirect('admin/profile/');
+    }
+    
 }
